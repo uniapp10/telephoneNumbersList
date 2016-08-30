@@ -23,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		531CB1241D7592AB000EC3EA /* 通讯录-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "通讯录-Bridging-Header.h"; sourceTree = "<group>"; };
 		5328FC9D1D6E83E100721D66 /* 通讯录.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "通讯录.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5328FCDB1D6E944B00721D66 /* ZDNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDNavigationController.swift; sourceTree = "<group>"; };
 		5328FCE11D6E94A300721D66 /* ZDTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDTabBarController.swift; sourceTree = "<group>"; };
@@ -59,6 +60,14 @@
 				AF6EEFBF86333F0C1315AC73 /* Pods____.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		531CB1231D75926B000EC3EA /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				531CB1241D7592AB000EC3EA /* 通讯录-Bridging-Header.h */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 		5328FC941D6E83E100721D66 = {
@@ -100,6 +109,7 @@
 				5328FCBA1D6E91C500721D66 /* View */,
 				5328FCBE1D6E91C500721D66 /* ViewModel */,
 				5328FCB81D6E91C500721D66 /* Model */,
+				531CB1231D75926B000EC3EA /* Other */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -436,6 +446,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.91guoxin.www.---";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/zhudong/Documents/myGit/telephoneNumbersList/通讯录/通讯录/Classes/Other/通讯录-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -448,6 +459,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.91guoxin.www.---";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/zhudong/Documents/myGit/telephoneNumbersList/通讯录/通讯录/Classes/Other/通讯录-Bridging-Header.h";
 			};
 			name = Release;
 		};

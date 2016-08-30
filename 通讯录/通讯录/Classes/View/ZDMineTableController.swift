@@ -19,6 +19,10 @@ class ZDMineTableController: UITableViewController {
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
 //        tableView.rowHeight = 300
+        let filePath = "/Users/zhudong/Desktop/a.txt"
+        let contentData = NSData(contentsOfFile: filePath)
+        let contentStr = NSString(data: contentData!, encoding: NSUnicodeStringEncoding)
+        print("\(contentStr)")
         setupUI()
     }
     private func setupUI(){
@@ -74,9 +78,7 @@ extension ZDMineTableController: ZDMineCellDelegate{
         if (cell.accountT?.text?.characters.count > 0) && (cell.pwdT?.text?.characters.count > 0) {
             let account = (cell.accountT?.text)!
             let pwd = (cell.pwdT?.text)!
-//            print("\(account)")
             if (accounts!["\(account)"] != nil) && ((accounts!["\(account)"] as? String) == pwd) {
-//                print("登录成功")
                 self.view.endEditing(true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: IsLogin)
                 var subviewsArray = cell.contentView.subviews
@@ -84,14 +86,21 @@ extension ZDMineTableController: ZDMineCellDelegate{
                     return view1.frame.maxY > view2.frame.maxY
                 })
                 for (index,value) in subviewsArray.enumerate() {
-                    UIView.animateWithDuration(0.20, delay: Double(index) * 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: [], animations: {
+                    UIView.animateWithDuration(0.2, delay: Double(index) * 0.1, options: [], animations: { 
                         value.transform = CGAffineTransformMakeTranslation(0, ScreenSize.height * 0.5)
                         }, completion: { (_) in
-                        value.removeFromSuperview()
+                            value.removeFromSuperview()
                     })
                 }
                 let tipLabel = UILabel()
-                tipLabel.text = "欢迎回来"
+                tipLabel.textColor = UIColor.grayColor()
+                tipLabel.text = "欢迎使用通讯录"
+                tipLabel.sizeToFit()
+                tipLabel.frame = CGRectMake((ScreenSize.width - tipLabel.bounds.size.width) * 0.5, ScreenSize.height, tipLabel.bounds.size.width, tipLabel.bounds.size.height)
+                self.tableView.addSubview(tipLabel)
+                UIView.animateWithDuration(1, delay: 1.2, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: [], animations: {
+                    tipLabel.transform = CGAffineTransformMakeTranslation(0, -300)
+                    }, completion: nil)
             }else{
                 let alertVC = UIAlertController(title: "提示", message: "用户名或密码错误", preferredStyle: .Alert)
                 let sureBtn = UIAlertAction(title: "确定", style: .Default, handler: { (_) in
@@ -115,6 +124,7 @@ extension ZDMineTableController: ZDMineCellDelegate{
      func mineCellDidLoginClick(cell: ZDMineCell) -> Void
 }
 class ZDMineCell: UITableViewCell {
+    //协议的准守类似类型名
     var delegate: ZDMineCellDelegate?
     var accountT: UITextField?
     var pwdT: UITextField?
