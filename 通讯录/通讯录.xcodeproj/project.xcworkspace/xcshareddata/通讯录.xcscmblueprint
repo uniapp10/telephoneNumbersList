@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "D8ACA7F78642250BD829F0996AB3A100B0D139E3",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "B68B1C5B1573AEA2C8F8E4ADE6B36DA86059859B" : 0,
+    "D8ACA7F78642250BD829F0996AB3A100B0D139E3" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "54050D3A-C0B2-414C-9D33-046094B84774",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "B68B1C5B1573AEA2C8F8E4ADE6B36DA86059859B" : "",
+    "D8ACA7F78642250BD829F0996AB3A100B0D139E3" : "telephoneNumbersList\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "通讯录",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "通讯录\/通讯录.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/zhudong10\/ZDZhiBoTableView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B68B1C5B1573AEA2C8F8E4ADE6B36DA86059859B"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/zhudong10\/telephoneNumbersList.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D8ACA7F78642250BD829F0996AB3A100B0D139E3"
+    }
+  ]
+}

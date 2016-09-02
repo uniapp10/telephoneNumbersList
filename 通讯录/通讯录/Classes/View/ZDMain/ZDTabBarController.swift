@@ -18,9 +18,10 @@ class ZDTabBarController: UITabBarController {
 //        self.tabBar.selectedItem = 4
 //        self.tabBar.setValue(4, forKey: "")
     }
+    
     private func addChildControllers(){
         for i in 0..<3 {
-            let detailVC = ZDDetailControllerTableViewController()
+            let detailVC = ZDDetailControllerTableViewController(style: .Plain)
             switch i {
             case 0:
                 detailVC.title = "按部门"
@@ -38,7 +39,9 @@ class ZDTabBarController: UITabBarController {
             addChildViewController(nav)
         }
         let mine = ZDMineTableController()
+        mine.title = "我的"
+        let nav = UINavigationController(rootViewController: mine)
         mine.tabBarItem.title = "我的"
-        addChildViewController(mine)
+        addChildViewController(nav)
     }
 }

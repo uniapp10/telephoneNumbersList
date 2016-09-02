@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SetViewFrame: UIView {
+extension UIView{
     var x: CGFloat? {
         get{
             return self.frame.minX
@@ -61,4 +61,6 @@ class SetViewFrame: UIView {
             self.layer.masksToBounds = true
         }
     }
+
 }
+

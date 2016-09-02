@@ -11,19 +11,84 @@ import UIKit
 let BtnHeight: CGFloat = 200
 let ScreenSize: CGSize = UIScreen.mainScreen().bounds.size
 let IsLogin = "IsLogin"
+let Account = "Account"
+let Pwd = "Pwd"
+let LoginSuccessNotification = "LoginSuccessNotification"
+let DataBasePath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last! as NSString).stringByAppendingPathComponent("persons.sqlite")
+let AccountsPath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last! as NSString).stringByAppendingPathComponent("Accounts.plist")
+
 class ZDMineTableController: UITableViewController {
     private var headerBtn: UIButton?
+    private var loginView: UIView?
+    private var tipLabel: UILabel?
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if NSUserDefaults.standardUserDefaults().boolForKey(IsLogin) {
+            self.tableView.reloadData()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.separatorStyle = .None
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
-//        tableView.rowHeight = 300
-        let filePath = "/Users/zhudong/Desktop/a.txt"
-        let contentData = NSData(contentsOfFile: filePath)
-        let contentStr = NSString(data: contentData!, encoding: NSUnicodeStringEncoding)
-        print("\(contentStr)")
         setupUI()
+        let navItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(barButtonClik))
+        self.navigationItem.leftBarButtonItem = navItem
+        let rightItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(rightItemClick))
+        rightItem.title = "注销"
+        self.navigationItem.rightBarButtonItem = rightItem
+        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardFrameChange(_:)), name: UIKeyboardDidChangeFrameNotification, object: nil)
+    }
+//    @objc private func keyboardFrameChange(notify: NSNotification){
+//        let dict = notify.userInfo
+//        let rect = dict![UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
+//        self.view.transform = CGAffineTransformMakeTranslation(0, (rect?.origin.y)! - ScreenSize.height)
+//    }
+    @objc private func rightItemClick(){
+        let alertController = UIAlertController(title: "提示", message: "您确定要退出吗?", preferredStyle: .ActionSheet)
+        let actionOne = UIAlertAction(title: "注销", style: .Destructive) { (_) in
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: IsLogin)
+            self.tipLabel?.removeFromSuperview()
+            self.loginView?.removeFromSuperview()
+            self.createLoginView()
+        }
+        let actionTwo = UIAlertAction(title: "取消", style: .Cancel) { (_) in
+            //
+        }
+        alertController.addAction(actionOne)
+        alertController.addAction(actionTwo)
+        self.navigationController?.presentViewController(alertController, animated: true, completion: nil)
+    }
+    @objc private func barButtonClik(){
+        debugLog("\(DataBasePath)")
+        let database = FMDatabase(path: DataBasePath)
+        if database.open() {
+            let createSql = "create table if not exists persons(department text,position text,name text,telephone text,email text);"
+            let result =  database.executeStatements(createSql)
+            if result {
+                debugLog("建表成功")
+            }
+        }
+        
+        let filePath = "/Users/zhudong/Desktop/newtongxunlu.txt"
+        let contentStr = try! NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
+        var strArray = contentStr.componentsSeparatedByString("\\n")
+        strArray.removeLast()
+        strArray.removeFirst()
+        let accountsPlist = NSMutableDictionary()
+        for str in strArray {
+            let array = str.componentsSeparatedByString("&")
+            let insertStr = "INSERT INTO persons (department,position,name,telephone,email) VALUES ('\(array[1])','\(array[2])','\(array[3])','\(array[4])','\(array[5])');"
+            database.executeStatements(insertStr)
+            accountsPlist["\(array[3])"] = "\(array[4])"
+        }
+        accountsPlist.writeToFile(AccountsPath, atomically: true)
+        database.close()
+    }
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
     }
     private func setupUI(){
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: ScreenSize.width, height: BtnHeight))
@@ -40,11 +105,26 @@ class ZDMineTableController: UITableViewController {
             make.edges.equalTo(btn)
         }
         self.tableView.tableHeaderView = headerView
-        
+        createLoginView()
+    }
+    private func createLoginView(){
+        let mineCell = ZDMineCell()
+        self.loginView = mineCell
+        self.tableView.addSubview(mineCell)
+        self.tableView.bringSubviewToFront(mineCell)
+        mineCell.snp_makeConstraints { (make) in
+            make.left.right.bottom.equalTo(tableView)
+            make.top.equalTo(tableView).offset(200)
         }
+        mineCell.delegate = self
+    }
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
     override func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.view.endEditing(true)
         let offsetY = scrollView.contentOffset.y
-        print("\(offsetY)")
+//        print("\(offsetY)")
         var newH = BtnHeight - offsetY
         if newH < BtnHeight {
             newH = BtnHeight
@@ -53,26 +133,13 @@ class ZDMineTableController: UITableViewController {
         headerBtn?.frame = CGRect(x: 0, y:(offsetY), width: oldFrame.width, height: newH)
     }
     lazy var accounts: NSDictionary? = {
-        let filePath: String = NSBundle.mainBundle().pathForResource("Accounts.plist", ofType: nil)!
-        var dict = NSDictionary(contentsOfFile: filePath)
+//        let filePath: String = NSBundle.mainBundle().pathForResource("Accounts.plist", ofType: nil)!
+        var dict = NSDictionary(contentsOfFile: AccountsPath)
         return dict
     }()
+    
+}
 
-}
-extension ZDMineTableController{
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var mineCell: ZDMineCell? = tableView.dequeueReusableCellWithIdentifier("ZDMineCell") as? ZDMineCell
-        if ((mineCell == nil)) {
-            mineCell = ZDMineCell(style: .Default, reuseIdentifier: "ZDMineCell")
-        }
-        mineCell!.delegate = self
-        mineCell?.selectionStyle = .None
-        return mineCell!
-    }
-}
 extension ZDMineTableController: ZDMineCellDelegate{
     func mineCellDidLoginClick(cell: ZDMineCell) {
         if (cell.accountT?.text?.characters.count > 0) && (cell.pwdT?.text?.characters.count > 0) {
@@ -81,7 +148,9 @@ extension ZDMineTableController: ZDMineCellDelegate{
             if (accounts!["\(account)"] != nil) && ((accounts!["\(account)"] as? String) == pwd) {
                 self.view.endEditing(true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: IsLogin)
-                var subviewsArray = cell.contentView.subviews
+                NSUserDefaults.standardUserDefaults().setObject(account, forKey: Account)
+                NSUserDefaults.standardUserDefaults().setObject(pwd, forKey: Pwd)
+                var subviewsArray = cell.subviews
                 subviewsArray = subviewsArray.sort({ (view1, view2) -> Bool in
                     return view1.frame.maxY > view2.frame.maxY
                 })
@@ -95,6 +164,7 @@ extension ZDMineTableController: ZDMineCellDelegate{
                 let tipLabel = UILabel()
                 tipLabel.textColor = UIColor.grayColor()
                 tipLabel.text = "欢迎使用通讯录"
+                self.tipLabel = tipLabel
                 tipLabel.sizeToFit()
                 tipLabel.frame = CGRectMake((ScreenSize.width - tipLabel.bounds.size.width) * 0.5, ScreenSize.height, tipLabel.bounds.size.width, tipLabel.bounds.size.height)
                 self.tableView.addSubview(tipLabel)
@@ -119,17 +189,20 @@ extension ZDMineTableController: ZDMineCellDelegate{
         }
     }
 }
+
 //类型外面定义协议
- protocol ZDMineCellDelegate{
-     func mineCellDidLoginClick(cell: ZDMineCell) -> Void
+protocol ZDMineCellDelegate{
+    func mineCellDidLoginClick(cell: ZDMineCell) -> Void
 }
-class ZDMineCell: UITableViewCell {
+class ZDMineCell: UIView {
     //协议的准守类似类型名
     var delegate: ZDMineCellDelegate?
     var accountT: UITextField?
     var pwdT: UITextField?
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    var loginBtn: UIButton?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
     
@@ -147,27 +220,30 @@ class ZDMineCell: UITableViewCell {
         pwdL.text = "密码:"
         let pwdT = UITextField()
         pwdT.placeholder = "请输入您的密码"
+        pwdT.secureTextEntry = true
         self.pwdT = pwdT
         let loginBtn = UIButton(type: .Custom)
+        self.loginBtn = loginBtn
         loginBtn.setTitle("登录", forState: .Normal)
         loginBtn.backgroundColor = UIColor.greenColor()
         loginBtn.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
         loginBtn.layer.cornerRadius = 15
         loginBtn.layer.masksToBounds = true
         loginBtn.addTarget(self, action: #selector(loginBtnClick), forControlEvents: .TouchUpInside)
-        contentView.addSubview(accountL)
-        contentView.addSubview(accountT)
-        contentView.addSubview(pwdL)
-        contentView.addSubview(pwdT)
-        contentView.addSubview(loginBtn)
+        addSubview(accountL)
+        addSubview(accountT)
+        addSubview(pwdL)
+        addSubview(pwdT)
+        
+        addSubview(loginBtn)
         accountL.snp_makeConstraints { (make) in
-            make.top.equalTo(contentView).offset(50)
-            make.left.equalTo(contentView).offset(4 * Margin)
+            make.top.equalTo(self).offset(50)
+            make.left.equalTo(self).offset(4 * Margin)
         }
         accountT.snp_makeConstraints { (make) in
             make.centerY.equalTo(accountL)
             make.left.equalTo(accountL.snp_right).offset(Margin)
-//            make.right.equalTo(contentView).offset(-2 * Margin)
+            //            make.right.equalTo(contentView).offset(-2 * Margin)
             make.width.equalTo(250)
         }
         pwdL.snp_makeConstraints { (make) in
@@ -177,16 +253,30 @@ class ZDMineCell: UITableViewCell {
         pwdT.snp_makeConstraints { (make) in
             make.centerY.equalTo(pwdL)
             make.left.right.equalTo(accountT)
-//            make.bottom.equalTo(contentView).offset(-3 * Margin)
+            //            make.bottom.equalTo(contentView).offset(-3 * Margin)
         }
         loginBtn.snp_makeConstraints { (make) in
             make.top.equalTo(pwdL.snp_bottom).offset(30)
-            make.centerX.equalTo(contentView)
+//            make.centerX.equalTo(self.snp_centerX)
             make.width.equalTo(300)
-            make.bottom.equalTo(contentView).offset(-3 * Margin)
+//            make.bottom.equalTo(self).offset(-3 * Margin)
+            make.left.equalTo((ScreenSize.width - 300) * 0.5)
         }
     }
     @objc private func loginBtnClick(){
         self.delegate?.mineCellDidLoginClick(self)
+    }
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        superview?.endEditing(true)
+        if self.accountT?.frame.contains(point) == true {
+            return self.accountT
+        }
+        if self.pwdT?.frame.contains(point) == true {
+            return self.pwdT
+        }
+        if self.loginBtn?.frame.contains(point) == true {
+            return self.loginBtn
+        }
+        return super.hitTest(point, withEvent: event)
     }
 }

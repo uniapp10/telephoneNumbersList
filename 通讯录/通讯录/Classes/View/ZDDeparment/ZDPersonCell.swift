@@ -24,6 +24,7 @@ class ZDPersonCell: UITableViewCell {
         contentView.addSubview(positionLabel)
         contentView.addSubview(nameLabel)
         contentView.addSubview(telephoneLabel)
+        contentView.addSubview(emailLabel)
         departmentLabel.snp_makeConstraints { (make) in
             make.top.left.equalTo(contentView).offset(Margin)
         }
@@ -40,6 +41,10 @@ class ZDPersonCell: UITableViewCell {
             make.bottom.equalTo(nameLabel)
             make.left.equalTo(nameLabel.snp_right).offset(Margin)
         }
+        emailLabel.snp_makeConstraints { (make) in
+            make.left.equalTo(telephoneLabel.snp_right).offset(Margin)
+            make.bottom.equalTo(telephoneLabel)
+        }
         let sepV: UIView = {
             let v = UIView()
             v.backgroundColor = UIColor.grayColor()
@@ -50,16 +55,20 @@ class ZDPersonCell: UITableViewCell {
             make.left.bottom.right.equalTo(contentView)
             make.height.equalTo(0.5)
         }
+        emailLabel.highlightTapAction = { ( containerView :UIView , text: NSAttributedString, range:NSRange, rect:CGRect) -> () in
+//            let mailVC = ZDMailViewController()
+//            let str = (text.string as NSString).substringWithRange(range)
+//            let nav = self.findNavigationController()!
+//            nav.pushViewController(mailVC, animated: true)
+        }
     }
     var person: ZDPerson?{
         didSet{
-            print("\(oldValue)")
-            print("\(person)")
-            
             departmentLabel.text = person?.department
             positionLabel.text = person?.position
             //labelname.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-            let attri = [NSForegroundColorAttributeName:UIColor.blackColor(),NSObliquenessAttributeName:0.5]
+//            let attri = [NSForegroundColorAttributeName:UIColor.blackColor(),NSObliquenessAttributeName:0.5]
+            let attri = [NSForegroundColorAttributeName:UIColor.blueColor()]
             let attrM = NSMutableAttributedString(string: (person?.name)!, attributes:attri)
             let attrMTel = NSMutableAttributedString(string: (person?.telephone)!, attributes: [NSFontAttributeName:UIFont(name: "Helvetica-Bold", size: 20)!])
             nameLabel.attributedText = attrM
@@ -70,6 +79,16 @@ class ZDPersonCell: UITableViewCell {
                 make.width.equalTo(newWidth)
             }
             telephoneLabel.attributedText = attrMTel
+            //[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+            
+            let attri_email = [NSUnderlineStyleAttributeName:NSNumber(integer:NSUnderlineStyle.StyleSingle.rawValue),NSFontAttributeName:UIFont.systemFontOfSize(17)]
+            let attrM_email = NSMutableAttributedString(string: (person?.email)!, attributes: attri_email)
+            let highlight = YYTextHighlight()
+            highlight.setColor(UIColor.redColor())
+            let border = YYTextBorder(fillColor: UIColor.grayColor(), cornerRadius: 3)
+            highlight.setBackgroundBorder(border)
+            attrM_email.yy_setTextHighlight(highlight, range: NSMakeRange(0, (person?.email?.characters.count)!))
+            emailLabel.attributedText = attrM_email
         }
     }
     
@@ -87,6 +106,10 @@ class ZDPersonCell: UITableViewCell {
     }()
     lazy var telephoneLabel: UILabel = {
         let label = ZDPersonCell.getLabel()
+        return label
+    }()
+    lazy var emailLabel: YYLabel = {
+        let label: YYLabel = YYLabel()
         return label
     }()
 

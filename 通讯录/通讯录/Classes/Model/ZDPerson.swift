@@ -13,6 +13,10 @@ class ZDPerson: NSObject {
     var position: String?
     var name: String?
     var telephone: String?
+    var email: String?
+    override init() {
+        super.init()
+    }
     init(dict: [String : AnyObject]){
         super.init()
         setValuesForKeysWithDictionary(dict)
