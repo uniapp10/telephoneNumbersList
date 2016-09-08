@@ -13,3 +13,4 @@
 #import "YYText.h"
 #import "YYLabel.h"
 #import "FMDB.h"
+#import "NSObject+ZDGetVariablesAndProperties.h"

@@ -8,7 +8,7 @@
 
 import UIKit
 
-let BtnHeight: CGFloat = 200
+let BtnHeight: CGFloat = 150
 let ScreenSize: CGSize = UIScreen.mainScreen().bounds.size
 let IsLogin = "IsLogin"
 let Account = "Account"
@@ -16,6 +16,7 @@ let Pwd = "Pwd"
 let LoginSuccessNotification = "LoginSuccessNotification"
 let DataBasePath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last! as NSString).stringByAppendingPathComponent("persons.sqlite")
 let AccountsPath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last! as NSString).stringByAppendingPathComponent("Accounts.plist")
+let IconViewHeight: CGFloat = 80
 
 class ZDMineTableController: UITableViewController {
     private var headerBtn: UIButton?
@@ -90,8 +91,9 @@ class ZDMineTableController: UITableViewController {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
     }
+    //MARK: - setupUI
     private func setupUI(){
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: ScreenSize.width, height: BtnHeight))
+        let headerView = UIView(frame: CGRect(x: 0, y: 64, width: ScreenSize.width, height: BtnHeight))
         let btn = UIButton(type: .Custom)
         btn.frame = CGRect(x: 0, y: 0, width: ScreenSize.width, height: BtnHeight)
         let image = UIImage(named: "0")
@@ -104,8 +106,44 @@ class ZDMineTableController: UITableViewController {
         blurEffectView.snp_makeConstraints { (make) in
             make.edges.equalTo(btn)
         }
+        let iconBtn = UIButton(type: .Custom)
+        iconBtn.setBackgroundImage(UIImage(named: "1"), forState: .Normal)
+        iconBtn.layer.cornerRadius = IconViewHeight * 0.5
+        iconBtn.layer.masksToBounds = true
+        iconBtn.addTarget(self, action: #selector(iconBtnClick(_:)), forControlEvents: .TouchUpInside)
+        btn.addSubview(iconBtn)
+        iconBtn.snp_makeConstraints { (make) in
+            make.center.equalTo(btn)
+            make.height.width.equalTo(IconViewHeight)
+        }
+        
         self.tableView.tableHeaderView = headerView
         createLoginView()
+    }
+    @objc private func iconBtnClick(btn: UIButton){
+        let imagePickerC = UIImagePickerController()
+        imagePickerC.delegate = self
+        let alertC = UIAlertController(title: "请选择", message: "图片来源", preferredStyle: .ActionSheet)
+        if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+            let cameraBtn = UIAlertAction(title: "拍照", style: .Default) { (_) in
+                imagePickerC.sourceType = .Camera
+                self.navigationController?.presentViewController(imagePickerC, animated: true, completion: nil)
+            }
+            alertC.addAction(cameraBtn)
+        }
+        if  UIImagePickerController.isSourceTypeAvailable(.SavedPhotosAlbum){
+            let albumBtn = UIAlertAction(title: "相册", style: .Default, handler: { (_) in
+                imagePickerC.sourceType = .SavedPhotosAlbum
+                self.navigationController?.presentViewController(imagePickerC, animated: true, completion: nil)
+            })
+            alertC.addAction(albumBtn)
+        }
+        let cancelBtn = UIAlertAction(title: "取消", style: .Cancel, handler: nil)
+        alertC.addAction(cancelBtn)
+        let attrTitle =
+        let array = NSObject.getVariables(alertC)
+        print("\(array)")
+        self.navigationController?.presentViewController(alertC, animated: true, completion: nil)
     }
     private func createLoginView(){
         let mineCell = ZDMineCell()
@@ -130,7 +168,7 @@ class ZDMineTableController: UITableViewController {
             newH = BtnHeight
         }
         let oldFrame = (headerBtn?.frame)!
-        headerBtn?.frame = CGRect(x: 0, y:(offsetY), width: oldFrame.width, height: newH)
+        headerBtn?.frame = CGRect(x: 0, y:(offsetY + 64), width: oldFrame.width, height: newH)
     }
     lazy var accounts: NSDictionary? = {
 //        let filePath: String = NSBundle.mainBundle().pathForResource("Accounts.plist", ofType: nil)!
@@ -139,7 +177,15 @@ class ZDMineTableController: UITableViewController {
     }()
     
 }
-
+extension ZDMineTableController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
+    {
+        print("\(info)")
+    }
+    func imagePickerControllerDidCancel(picker: UIImagePickerController){
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
 extension ZDMineTableController: ZDMineCellDelegate{
     func mineCellDidLoginClick(cell: ZDMineCell) {
         if (cell.accountT?.text?.characters.count > 0) && (cell.pwdT?.text?.characters.count > 0) {
