@@ -21,6 +21,8 @@
 		535197D91D702A25004F52CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 535197D31D702A25004F52CD /* LaunchScreen.storyboard */; };
 		535197DA1D702A25004F52CD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 535197D51D702A25004F52CD /* Info.plist */; };
 		535681DE1D7EC2DF006342EC /* NSObject+ZDGetVariablesAndProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 535681DD1D7EC2DF006342EC /* NSObject+ZDGetVariablesAndProperties.m */; };
+		536A435F1D8115CF00B7EF09 /* ZDSetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536A435E1D8115CF00B7EF09 /* ZDSetViewController.swift */; };
+		536A43611D81163300B7EF09 /* Set.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 536A43601D81163300B7EF09 /* Set.storyboard */; };
 		53A778A21D77F528002D6A49 /* YYTextContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778701D77F528002D6A49 /* YYTextContainerView.m */; };
 		53A778A31D77F528002D6A49 /* YYTextDebugOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778721D77F528002D6A49 /* YYTextDebugOption.m */; };
 		53A778A41D77F528002D6A49 /* YYTextEffectWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778741D77F528002D6A49 /* YYTextEffectWindow.m */; };
@@ -74,6 +76,8 @@
 		535197D51D702A25004F52CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		535681DC1D7EC2DF006342EC /* NSObject+ZDGetVariablesAndProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ZDGetVariablesAndProperties.h"; sourceTree = "<group>"; };
 		535681DD1D7EC2DF006342EC /* NSObject+ZDGetVariablesAndProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ZDGetVariablesAndProperties.m"; sourceTree = "<group>"; };
+		536A435E1D8115CF00B7EF09 /* ZDSetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDSetViewController.swift; sourceTree = "<group>"; };
+		536A43601D81163300B7EF09 /* Set.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Set.storyboard; sourceTree = "<group>"; };
 		53A7786F1D77F528002D6A49 /* YYTextContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextContainerView.h; sourceTree = "<group>"; };
 		53A778701D77F528002D6A49 /* YYTextContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextContainerView.m; sourceTree = "<group>"; };
 		53A778711D77F528002D6A49 /* YYTextDebugOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextDebugOption.h; sourceTree = "<group>"; };
@@ -287,6 +291,8 @@
 			isa = PBXGroup;
 			children = (
 				5329FF881D7954BA008B4B6B /* ZDMineTableController.swift */,
+				536A435E1D8115CF00B7EF09 /* ZDSetViewController.swift */,
+				536A43601D81163300B7EF09 /* Set.storyboard */,
 			);
 			path = ZDMine;
 			sourceTree = "<group>";
@@ -470,6 +476,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				535197DA1D702A25004F52CD /* Info.plist in Resources */,
+				536A43611D81163300B7EF09 /* Set.storyboard in Resources */,
 				535197D91D702A25004F52CD /* LaunchScreen.storyboard in Resources */,
 				535197D81D702A25004F52CD /* Assets.xcassets in Resources */,
 				53A778D21D783120002D6A49 /* Info.plist in Resources */,
@@ -555,6 +562,7 @@
 				53A778AE1D77F528002D6A49 /* YYTextRubyAnnotation.m in Sources */,
 				53A778B51D77F528002D6A49 /* YYTextTransaction.m in Sources */,
 				5328FCE61D6E9B0B00721D66 /* ZDPerson.swift in Sources */,
+				536A435F1D8115CF00B7EF09 /* ZDSetViewController.swift in Sources */,
 				53A778AB1D77F528002D6A49 /* YYTextArchiver.m in Sources */,
 				53A778B71D77F528002D6A49 /* YYTextWeakProxy.m in Sources */,
 				5329FF891D7954BA008B4B6B /* ZDMineTableController.swift in Sources */,

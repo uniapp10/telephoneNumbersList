@@ -22,6 +22,7 @@ class ZDMineTableController: UITableViewController {
     private var headerBtn: UIButton?
     private var loginView: UIView?
     private var tipLabel: UILabel?
+    private var iconBtn: UIButton?
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if NSUserDefaults.standardUserDefaults().boolForKey(IsLogin) {
@@ -106,24 +107,42 @@ class ZDMineTableController: UITableViewController {
         blurEffectView.snp_makeConstraints { (make) in
             make.edges.equalTo(btn)
         }
+//        blurEffectView.hidden = true
         let iconBtn = UIButton(type: .Custom)
         iconBtn.setBackgroundImage(UIImage(named: "1"), forState: .Normal)
         iconBtn.layer.cornerRadius = IconViewHeight * 0.5
         iconBtn.layer.masksToBounds = true
         iconBtn.addTarget(self, action: #selector(iconBtnClick(_:)), forControlEvents: .TouchUpInside)
+        self.iconBtn = iconBtn
         btn.addSubview(iconBtn)
         iconBtn.snp_makeConstraints { (make) in
             make.center.equalTo(btn)
             make.height.width.equalTo(IconViewHeight)
         }
-        
+        let setBtn = UIButton(type: .Custom)
+        setBtn.setImage(UIImage(named: "set"), forState: .Normal)
+        setBtn.sizeToFit()
+        headerView.addSubview(setBtn)
+        setBtn.addTarget(setBtn, action: #selector(setBtnClick), forControlEvents: .TouchUpInside)
+        setBtn.snp_makeConstraints { (make) in
+            make.top.equalTo(headerView).offset(3 * Margin)
+            make.right.equalTo(headerView.snp_right).offset( -3 * Margin)
+        }
         self.tableView.tableHeaderView = headerView
         createLoginView()
+    }
+    @objc private func setBtnClick(){
+        let storyboard = UIStoryboard(name: "Set", bundle: nil)
+//        let setT
     }
     @objc private func iconBtnClick(btn: UIButton){
         let imagePickerC = UIImagePickerController()
         imagePickerC.delegate = self
-        let alertC = UIAlertController(title: "请选择", message: "图片来源", preferredStyle: .ActionSheet)
+        imagePickerC.allowsEditing = true
+        let alertC = UIAlertController(title: "请选择图片来源", message: nil, preferredStyle: .ActionSheet)
+        let attributes = [NSFontAttributeName : UIFont.systemFontOfSize(17),NSForegroundColorAttributeName : UIColor.greenColor()];
+        let attriTitle = NSAttributedString(string: "请选择图片来源", attributes: attributes);
+        alertC.setValue(attriTitle, forKey: "attributedTitle")
         if UIImagePickerController.isSourceTypeAvailable(.Camera) {
             let cameraBtn = UIAlertAction(title: "拍照", style: .Default) { (_) in
                 imagePickerC.sourceType = .Camera
@@ -140,9 +159,8 @@ class ZDMineTableController: UITableViewController {
         }
         let cancelBtn = UIAlertAction(title: "取消", style: .Cancel, handler: nil)
         alertC.addAction(cancelBtn)
-        let attrTitle =
         let array = NSObject.getVariables(alertC)
-        print("\(array)")
+        debugPrint("\(array)")
         self.navigationController?.presentViewController(alertC, animated: true, completion: nil)
     }
     private func createLoginView(){
@@ -178,9 +196,11 @@ class ZDMineTableController: UITableViewController {
     
 }
 extension ZDMineTableController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
-    {
-        print("\(info)")
+    //代理方法需要手动才可以显示
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        let imageData = UIImageJPEGRepresentation(image, 0.8)
+        self.iconBtn?.setImage(UIImage(data: imageData!), forState: .Normal)
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController){
         picker.dismissViewControllerAnimated(true, completion: nil)
