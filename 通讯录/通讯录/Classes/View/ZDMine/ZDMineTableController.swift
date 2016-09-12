@@ -18,11 +18,13 @@ let DataBasePath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .Use
 let AccountsPath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last! as NSString).stringByAppendingPathComponent("Accounts.plist")
 let IconViewHeight: CGFloat = 80
 
+
 class ZDMineTableController: UITableViewController {
     private var headerBtn: UIButton?
     private var loginView: UIView?
     private var tipLabel: UILabel?
     private var iconBtn: UIButton?
+    private var effectView: UIVisualEffectView?
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if NSUserDefaults.standardUserDefaults().boolForKey(IsLogin) {
@@ -55,6 +57,7 @@ class ZDMineTableController: UITableViewController {
             self.tipLabel?.removeFromSuperview()
             self.loginView?.removeFromSuperview()
             self.createLoginView()
+            self.iconBtn?.hidden = true
         }
         let actionTwo = UIAlertAction(title: "取消", style: .Cancel) { (_) in
             //
@@ -100,6 +103,7 @@ class ZDMineTableController: UITableViewController {
         let image = UIImage(named: "0")
         let blurEffect = UIBlurEffect(style: .Light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        self.effectView = blurEffectView
         btn.setBackgroundImage(image, forState: .Normal)
         self.headerBtn = btn
         headerView.addSubview(btn)
@@ -114,6 +118,7 @@ class ZDMineTableController: UITableViewController {
         iconBtn.layer.masksToBounds = true
         iconBtn.addTarget(self, action: #selector(iconBtnClick(_:)), forControlEvents: .TouchUpInside)
         self.iconBtn = iconBtn
+        self.iconBtn?.hidden = true
         btn.addSubview(iconBtn)
         iconBtn.snp_makeConstraints { (make) in
             make.center.equalTo(btn)
@@ -123,7 +128,7 @@ class ZDMineTableController: UITableViewController {
         setBtn.setImage(UIImage(named: "set"), forState: .Normal)
         setBtn.sizeToFit()
         headerView.addSubview(setBtn)
-        setBtn.addTarget(setBtn, action: #selector(setBtnClick), forControlEvents: .TouchUpInside)
+        setBtn.addTarget(self, action: #selector(setBtnClick), forControlEvents: .TouchUpInside)
         setBtn.snp_makeConstraints { (make) in
             make.top.equalTo(headerView).offset(3 * Margin)
             make.right.equalTo(headerView.snp_right).offset( -3 * Margin)
@@ -133,7 +138,18 @@ class ZDMineTableController: UITableViewController {
     }
     @objc private func setBtnClick(){
         let storyboard = UIStoryboard(name: "Set", bundle: nil)
-//        let setT
+        let setVC: ZDSetViewController = storyboard.instantiateInitialViewController() as! ZDSetViewController
+        setVC.switchChanged = {(setVC: ZDSetViewController,setSwitch: UISwitch) -> () in
+            if setSwitch.on {
+                self.effectView?.hidden = false
+            }else{
+                self.effectView?.hidden = true
+            }
+        }
+        setVC.didSelectImage = {(image: UIImage) -> Void in
+            self.headerBtn?.setImage(image, forState: .Normal)
+        }
+        self.navigationController?.pushViewController(setVC, animated: true)
     }
     @objc private func iconBtnClick(btn: UIButton){
         let imagePickerC = UIImagePickerController()
@@ -236,7 +252,15 @@ extension ZDMineTableController: ZDMineCellDelegate{
                 self.tableView.addSubview(tipLabel)
                 UIView.animateWithDuration(1, delay: 1.2, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: [], animations: {
                     tipLabel.transform = CGAffineTransformMakeTranslation(0, -300)
-                    }, completion: nil)
+                    }, completion: { _ in
+                        self.iconBtn?.hidden = false;
+                        let basicAni = CABasicAnimation(keyPath: "transform.rotation.z")
+                        basicAni.toValue = M_PI * 2 * 3
+                        basicAni.duration = 3
+                        basicAni.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+                        self.iconBtn?.layer.addAnimation(basicAni, forKey: nil)
+                })
+
             }else{
                 let alertVC = UIAlertController(title: "提示", message: "用户名或密码错误", preferredStyle: .Alert)
                 let sureBtn = UIAlertAction(title: "确定", style: .Default, handler: { (_) in
@@ -256,13 +280,13 @@ extension ZDMineTableController: ZDMineCellDelegate{
     }
 }
 
-//类型外面定义协议
-protocol ZDMineCellDelegate{
+//类型外面定义协议,继承至基协议:NSObjectProtocol
+protocol ZDMineCellDelegate: NSObjectProtocol{
     func mineCellDidLoginClick(cell: ZDMineCell) -> Void
 }
 class ZDMineCell: UIView {
-    //协议的准守类似类型名
-    var delegate: ZDMineCellDelegate?
+    //协议的遵守类似类型名,代理要用weak来修饰
+    weak var delegate: ZDMineCellDelegate?
     var accountT: UITextField?
     var pwdT: UITextField?
     var loginBtn: UIButton?

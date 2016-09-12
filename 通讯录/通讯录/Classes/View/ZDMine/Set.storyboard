@@ -32,6 +32,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ee0-ov-bRF">
                                                     <rect key="frame" x="310" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="effectSwitchChanged:" destination="SNn-aO-BK4" eventType="valueChanged" id="45W-lu-5R9"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -72,6 +75,9 @@
                     </tableView>
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="effectSwitch" destination="Ee0-ov-bRF" id="pY0-h3-51s"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yTd-Nb-aK7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
