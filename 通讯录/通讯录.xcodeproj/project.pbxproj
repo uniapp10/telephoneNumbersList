@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		10240CC1DABD1C6665787700 /* Pods____.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE01138FDC7135DA33DA6578 /* Pods____.framework */; };
+		5300EE451D869DAA006BE26E /* ZDSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300EE441D869DAA006BE26E /* ZDSearchBar.swift */; };
+		5300EE471D86A8B1006BE26E /* ZDSearchBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5300EE461D86A8B1006BE26E /* ZDSearchBar.xib */; };
 		5328FCDE1D6E944B00721D66 /* ZDNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5328FCDB1D6E944B00721D66 /* ZDNavigationController.swift */; };
 		5328FCE21D6E94A300721D66 /* ZDTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5328FCE11D6E94A300721D66 /* ZDTabBarController.swift */; };
 		5328FCE41D6E954500721D66 /* ZDDetailControllerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5328FCE31D6E954500721D66 /* ZDDetailControllerTableViewController.swift */; };
@@ -48,7 +50,6 @@
 		53A778B81D77F528002D6A49 /* YYLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A7789E1D77F528002D6A49 /* YYLabel.m */; };
 		53A778B91D77F528002D6A49 /* YYTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778A11D77F528002D6A49 /* YYTextView.m */; };
 		53A778BD1D7803E0002D6A49 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A778BC1D7803E0002D6A49 /* UIView+Extension.swift */; };
-		53A778BF1D7805F6002D6A49 /* ZDMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A778BE1D7805F6002D6A49 /* ZDMailViewController.swift */; };
 		53A778CD1D783120002D6A49 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778C21D783120002D6A49 /* FMDatabase.m */; };
 		53A778CE1D783120002D6A49 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778C41D783120002D6A49 /* FMDatabaseAdditions.m */; };
 		53A778CF1D783120002D6A49 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A778C61D783120002D6A49 /* FMDatabasePool.m */; };
@@ -60,6 +61,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5300EE441D869DAA006BE26E /* ZDSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDSearchBar.swift; sourceTree = "<group>"; };
+		5300EE461D86A8B1006BE26E /* ZDSearchBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZDSearchBar.xib; sourceTree = "<group>"; };
 		531CB1241D7592AB000EC3EA /* 通讯录-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "通讯录-Bridging-Header.h"; sourceTree = "<group>"; };
 		5328FC9D1D6E83E100721D66 /* 通讯录.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "通讯录.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5328FCDB1D6E944B00721D66 /* ZDNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDNavigationController.swift; sourceTree = "<group>"; };
@@ -128,7 +131,6 @@
 		53A778A01D77F528002D6A49 /* YYTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextView.h; sourceTree = "<group>"; };
 		53A778A11D77F528002D6A49 /* YYTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextView.m; sourceTree = "<group>"; };
 		53A778BC1D7803E0002D6A49 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		53A778BE1D7805F6002D6A49 /* ZDMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZDMailViewController.swift; sourceTree = "<group>"; };
 		53A778C11D783120002D6A49 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		53A778C21D783120002D6A49 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		53A778C31D783120002D6A49 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -273,7 +275,6 @@
 			children = (
 				5328FCE31D6E954500721D66 /* ZDDetailControllerTableViewController.swift */,
 				5328FCE71D6ED41100721D66 /* ZDPersonCell.swift */,
-				53A778BE1D7805F6002D6A49 /* ZDMailViewController.swift */,
 			);
 			path = ZDDeparment;
 			sourceTree = "<group>";
@@ -283,6 +284,8 @@
 			children = (
 				5328FCDB1D6E944B00721D66 /* ZDNavigationController.swift */,
 				5328FCE11D6E94A300721D66 /* ZDTabBarController.swift */,
+				5300EE441D869DAA006BE26E /* ZDSearchBar.swift */,
+				5300EE461D86A8B1006BE26E /* ZDSearchBar.xib */,
 			);
 			path = ZDMain;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				535197D91D702A25004F52CD /* LaunchScreen.storyboard in Resources */,
 				535197D81D702A25004F52CD /* Assets.xcassets in Resources */,
 				53A778D21D783120002D6A49 /* Info.plist in Resources */,
+				5300EE471D86A8B1006BE26E /* ZDSearchBar.xib in Resources */,
 				535197D61D702A25004F52CD /* Accounts.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -542,6 +546,7 @@
 				53A778BD1D7803E0002D6A49 /* UIView+Extension.swift in Sources */,
 				535197D71D702A25004F52CD /* AppDelegate.swift in Sources */,
 				53A778AF1D77F528002D6A49 /* YYTextRunDelegate.m in Sources */,
+				5300EE451D869DAA006BE26E /* ZDSearchBar.swift in Sources */,
 				53A778CD1D783120002D6A49 /* FMDatabase.m in Sources */,
 				53A778A21D77F528002D6A49 /* YYTextContainerView.m in Sources */,
 				5328FCE81D6ED41100721D66 /* ZDPersonCell.swift in Sources */,
@@ -568,7 +573,6 @@
 				5329FF891D7954BA008B4B6B /* ZDMineTableController.swift in Sources */,
 				53A778CE1D783120002D6A49 /* FMDatabaseAdditions.m in Sources */,
 				53A778A51D77F528002D6A49 /* YYTextInput.m in Sources */,
-				53A778BF1D7805F6002D6A49 /* ZDMailViewController.swift in Sources */,
 				5328FCE21D6E94A300721D66 /* ZDTabBarController.swift in Sources */,
 				53A778B31D77F528002D6A49 /* UIView+YYText.m in Sources */,
 				53A778A71D77F528002D6A49 /* YYTextLayout.m in Sources */,

@@ -65,8 +65,44 @@ class ZDDetailControllerTableViewController: UITableViewController {
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorStyle = .None
+        if self.title == "按姓名" {
+            let titleView = ZDSearchBar.loadSearchBar()
+            titleView.btnClickDelegate = {(search:ZDSearchBar) -> Void in
+                search.textF.text = nil
+                search.textF.resignFirstResponder()
+                self.hearders.removeAll()
+                let  str = "SELECT distinct (name) FROM persons;"
+                let result: FMResultSet = self.database.executeQuery(str, withArgumentsInArray: nil)
+                while result.next() {
+                    let title = result.stringForColumn("name")
+                    let header = ZDHeader(title: title)
+                    self.hearders += [header]
+                }
+                self.tableView.reloadData()
+            }
+            self.navigationItem.titleView = titleView
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(valueChagedNotification(_:)), name: ValueChangedNotification, object: nil)
+        }
     }
-    
+    func valueChagedNotification(notify: NSNotification) -> Void {
+        let dict = notify.userInfo
+        let str =  dict!["str"]!
+        debugPrint("\(str)")
+        if database.open() {
+            hearders.removeAll()
+            let sqliteStr = "SELECT * FROM persons WHERE name LIKE '%\(str)%' ORDER BY name DESC;"
+            let result = database.executeQuery(sqliteStr, withArgumentsInArray: nil)
+            while result.next() {
+                let title = result.stringForColumn("name")
+                let header = ZDHeader(title: title)
+                hearders += [header]
+            }
+            tableView.reloadData()
+        }
+    }
+    deinit{
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     let Header = "Header"
     let HeaderViewHeight: CGFloat = 30
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -179,5 +215,12 @@ class ZDHeaderView: UITableViewHeaderFooterView {
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.delegate?.headerViewDidTouch(self)
+    }
+}
+extension ZDDetailControllerTableViewController: UITextFieldDelegate{
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let str = textField.text
+        print("\(str)")
+        return true
     }
 }

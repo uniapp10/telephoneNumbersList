@@ -14,7 +14,7 @@ class ZDTabBarController: UITabBarController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         addChildControllers()
-        selectedIndex = 3
+        selectedIndex = 2
 //        self.tabBar.selectedItem = 4
 //        self.tabBar.setValue(4, forKey: "")
     }
@@ -28,10 +28,11 @@ class ZDTabBarController: UITabBarController {
                 detailVC.tabBarItem.title = "按部门"
             case 1:
                 detailVC.title = "按职位"
-                detailVC.tabBarItem.title = "按职位"
             case 2:
                 detailVC.title = "按姓名"
-                detailVC.tabBarItem.title = "按姓名"
+                
+                let titleView = ZDSearchBar.loadSearchBar()
+                detailVC.navigationItem.titleView = titleView
                 //default不可以省略
             default: break
             }
