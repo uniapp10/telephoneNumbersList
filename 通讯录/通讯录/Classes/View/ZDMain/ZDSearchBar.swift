@@ -20,9 +20,10 @@ class ZDSearchBar: UIView {
     override func awakeFromNib() {
         let imageView = UIImageView(image: UIImage(named: "set"))
         imageView.sizeToFit()
-        imageView.backgroundColor = UIColor.grayColor()
+        imageView.frame = CGRect(x: 0, y: 0, width: imageView.bounds.size.width + 10, height: imageView.bounds.size.height)
+        imageView.contentMode = .Center
+//        imageView.backgroundColor = UIColor.grayColor()
         self.textF.leftViewMode = .Always
-        self.textF.leftView?.frame = imageView.bounds
         self.textF.leftView = imageView
     }
     @IBOutlet weak var rightConst: NSLayoutConstraint!

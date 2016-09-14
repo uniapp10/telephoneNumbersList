@@ -37,12 +37,11 @@ class ZDMineTableController: UITableViewController {
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         setupUI()
-        let navItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(barButtonClik))
-        self.navigationItem.leftBarButtonItem = navItem
-        let rightItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(rightItemClick))
-        rightItem.title = "注销"
-        self.navigationItem.rightBarButtonItem = rightItem
-        ZDNetworkTool.shareNetworkTool.loadData()
+        let leftBar = UIBarButtonItem(title: "生成密码", style: .Done, target: self, action: #selector(barButtonClik))
+        self.navigationItem.leftBarButtonItem = leftBar
+        let rightBar = UIBarButtonItem(title: "注销账户", style: .Done, target: self, action: #selector(rightItemClick))
+        self.navigationItem.rightBarButtonItem = rightBar
+//        ZDNetworkTool.shareNetworkTool.loadData()
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardFrameChange(_:)), name: UIKeyboardDidChangeFrameNotification, object: nil)
     }
 //    @objc private func keyboardFrameChange(notify: NSNotification){
@@ -67,6 +66,7 @@ class ZDMineTableController: UITableViewController {
         self.navigationController?.presentViewController(alertController, animated: true, completion: nil)
     }
     @objc private func barButtonClik(){
+        self.navigationItem.leftBarButtonItem = nil
         debugLog("\(DataBasePath)")
         let database = FMDatabase(path: DataBasePath)
         if database.open() {
@@ -77,7 +77,7 @@ class ZDMineTableController: UITableViewController {
             }
         }
         
-        let filePath = "/Users/zhudong/Desktop/newtongxunlu.txt"
+        let filePath = "/Users/zhudong/Desktop/tongxunlu1.txt"
         let contentStr = try! NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
         var strArray = contentStr.componentsSeparatedByString("\\n")
         strArray.removeLast()
@@ -260,6 +260,7 @@ extension ZDMineTableController: ZDMineCellDelegate{
                         basicAni.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
                         self.iconBtn?.layer.addAnimation(basicAni, forKey: nil)
                 })
+                self.loadData()
 
             }else{
                 let alertVC = UIAlertController(title: "提示", message: "用户名或密码错误", preferredStyle: .Alert)
@@ -277,6 +278,9 @@ extension ZDMineTableController: ZDMineCellDelegate{
             alertVC.addAction(sureBtn)
             presentViewController(alertVC, animated: true, completion: nil)
         }
+    }
+    func loadData(){
+       ZDNetworkTool.shareNetworkTool.loadData()
     }
 }
 

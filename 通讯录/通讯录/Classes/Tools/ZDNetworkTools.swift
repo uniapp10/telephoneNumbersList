@@ -14,7 +14,7 @@ enum HttpMethods: Int {
 }
 struct API {//http://127.0.0.1/tongxunlu.txt
     static let baseUrl = "http://127.0.0.1/"
-    static let url = "tongxunlu.txt"
+    static let url = "tongxunlu1.txt"
 }
 
 class ZDNetworkTool: AFHTTPSessionManager{
@@ -22,6 +22,7 @@ class ZDNetworkTool: AFHTTPSessionManager{
     static let shareNetworkTool: ZDNetworkTool = {
         let baseUrl = NSURL(string: API.baseUrl)
         let tool = ZDNetworkTool(baseURL: baseUrl)
+        tool.responseSerializer.acceptableContentTypes?.insert("text/plain")
         return tool
     }()
     func request(method: HttpMethods,urlString: String,parameters: AnyObject?,finish:((responseObject: AnyObject?, error: NSError?) -> ())){
@@ -44,13 +45,36 @@ class ZDNetworkTool: AFHTTPSessionManager{
 extension ZDNetworkTool{
 
     func loadData(){
-        GET("http://127.0.0.1/tongxunlu.txt", parameters: nil, success: { (dataTask, respose) in
-            print("\(respose)")
-            }) { (_, error) in
-                print("\(error)")
-        }
-       request(.Get, urlString: API.url, parameters: nil) { (responseObject, error) in
-            debugPrint("\(responseObject)")
-        }
+        let url = NSURL(string: "http://127.0.0.1/tongxunlu1.txt")
+        let session = NSURLSession.sharedSession()
+        session.dataTaskWithURL(url!) { (data, response, error) in
+            if error != nil {return}
+            let contentStr = NSString(data: data!, encoding: NSUTF8StringEncoding)!
+            var strArray = contentStr.componentsSeparatedByString("\\n")
+            strArray.removeLast()
+            strArray.removeFirst()
+            let accountsPlist = NSMutableDictionary()
+            let database = FMDatabase(path: DataBasePath)
+            if database.open() {
+                let deleteSql = "drop table persons"
+                let deleteResult =  database.executeStatements(deleteSql)
+                if deleteResult {
+                    debugLog("删除表格成功")
+                }
+                let createSql = "create table if not exists persons(department text,position text,name text,telephone text,email text);"
+                let result =  database.executeStatements(createSql)
+                if result {
+                    debugLog("建表成功")
+                }
+            }
+            for str in strArray {
+                let array = str.componentsSeparatedByString("&")
+                let insertStr = "INSERT INTO persons (department,position,name,telephone,email) VALUES ('\(array[1])','\(array[2])','\(array[3])','\(array[4])','\(array[5])');"
+                database.executeStatements(insertStr)
+                accountsPlist["\(array[3])"] = "\(array[4])"
+            }
+            accountsPlist.writeToFile(AccountsPath, atomically: true)
+            database.close()
+        }.resume()
     }
 }

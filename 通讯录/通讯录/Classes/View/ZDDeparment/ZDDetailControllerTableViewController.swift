@@ -12,6 +12,8 @@ class ZDDetailControllerTableViewController: UITableViewController {
     private var hearders: [ZDHeader] = [ZDHeader]()
     let database = FMDatabase(path: DataBasePath)
     var param: String?
+    var isLogin: Bool?
+    
     override init(style: UITableViewStyle) {
         super.init(style: style)
     }
@@ -23,6 +25,7 @@ class ZDDetailControllerTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         if NSUserDefaults.standardUserDefaults().objectForKey(IsLogin)?.boolValue == true {
             debugLog("登录成功")
+            self.isLogin = true
             if database.open() {
 
                 switch self.navigationItem.title! {
@@ -50,6 +53,7 @@ class ZDDetailControllerTableViewController: UITableViewController {
             }
             database.close()
         }else{
+            self.isLogin = false
             self.hearders.removeAll()
             tableView.reloadData()
             let label = UILabel()
@@ -70,15 +74,17 @@ class ZDDetailControllerTableViewController: UITableViewController {
             titleView.btnClickDelegate = {(search:ZDSearchBar) -> Void in
                 search.textF.text = nil
                 search.textF.resignFirstResponder()
-                self.hearders.removeAll()
-                let  str = "SELECT distinct (name) FROM persons;"
-                let result: FMResultSet = self.database.executeQuery(str, withArgumentsInArray: nil)
-                while result.next() {
-                    let title = result.stringForColumn("name")
-                    let header = ZDHeader(title: title)
-                    self.hearders += [header]
+                if self.isLogin == true {
+                    self.hearders.removeAll()
+                    let  str = "SELECT distinct (name) FROM persons;"
+                    let result: FMResultSet = self.database.executeQuery(str, withArgumentsInArray: nil)
+                    while result.next() {
+                        let title = result.stringForColumn("name")
+                        let header = ZDHeader(title: title)
+                        self.hearders += [header]
+                    }
+                    self.tableView.reloadData()
                 }
-                self.tableView.reloadData()
             }
             self.navigationItem.titleView = titleView
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(valueChagedNotification(_:)), name: ValueChangedNotification, object: nil)
@@ -88,16 +94,18 @@ class ZDDetailControllerTableViewController: UITableViewController {
         let dict = notify.userInfo
         let str =  dict!["str"]!
         debugPrint("\(str)")
-        if database.open() {
-            hearders.removeAll()
-            let sqliteStr = "SELECT * FROM persons WHERE name LIKE '%\(str)%' ORDER BY name DESC;"
-            let result = database.executeQuery(sqliteStr, withArgumentsInArray: nil)
-            while result.next() {
-                let title = result.stringForColumn("name")
-                let header = ZDHeader(title: title)
-                hearders += [header]
+        if self.isLogin == true{
+            if database.open() {
+                hearders.removeAll()
+                let sqliteStr = "SELECT * FROM persons WHERE name LIKE '%\(str)%' ORDER BY name DESC;"
+                let result = database.executeQuery(sqliteStr, withArgumentsInArray: nil)
+                while result.next() {
+                    let title = result.stringForColumn("name")
+                    let header = ZDHeader(title: title)
+                    hearders += [header]
+                }
+                tableView.reloadData()
             }
-            tableView.reloadData()
         }
     }
     deinit{
