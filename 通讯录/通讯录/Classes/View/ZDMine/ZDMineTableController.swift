@@ -42,7 +42,7 @@ class ZDMineTableController: UITableViewController {
         let rightItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(rightItemClick))
         rightItem.title = "注销"
         self.navigationItem.rightBarButtonItem = rightItem
-        
+        ZDNetworkTool.shareNetworkTool.loadData()
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardFrameChange(_:)), name: UIKeyboardDidChangeFrameNotification, object: nil)
     }
 //    @objc private func keyboardFrameChange(notify: NSNotification){

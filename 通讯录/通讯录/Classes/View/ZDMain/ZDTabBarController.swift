@@ -14,7 +14,7 @@ class ZDTabBarController: UITabBarController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         addChildControllers()
-        selectedIndex = 2
+        selectedIndex = 3
 //        self.tabBar.selectedItem = 4
 //        self.tabBar.setValue(4, forKey: "")
     }
